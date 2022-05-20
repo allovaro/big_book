@@ -9,6 +9,9 @@ import avatar1 from '../../../assets/images/user/avatar-1.jpg';
 import avatar2 from '../../../assets/images/user/avatar-2.jpg';
 import avatar3 from '../../../assets/images/user/avatar-3.jpg';
 
+import Income from '../../../components/Card/Income';
+import MonthPieStats from '../../charts/nvd3-chart/chart/MonthPieStats';
+
 const DashDefault = () => {
     return (
         <React.Fragment>
@@ -76,7 +79,7 @@ const DashDefault = () => {
                             <div className="row d-flex align-items-center">
                                 <div className="col-9">
                                     <h3 className="f-w-300 d-flex align-items-center m-b-0">
-                                        <i className="feather icon-arrow-up text-c-green f-30 m-r-5" /> $8.638.32
+                                        <i className="feather icon-arrow-up text-c-green f-30 m-r-5" /> 500
                                     </h3>
                                 </div>
 
@@ -96,6 +99,21 @@ const DashDefault = () => {
                             </div>
                         </Card.Body>
                     </Card>
+                </Col>
+                <Col xl={3}>
+                    <Income />
+                </Col>
+                <Col xl={3}>
+                    <Card>
+                        <Card.Header>
+                            <Card.Title as="h5">Баланс 50%30%20%</Card.Title>
+                        </Card.Header>
+                        <Card.Body className="text-center">
+                            <MonthPieStats month={4}/>
+                        </Card.Body>
+                    </Card>
+                </Col>
+                <Col xl={4}>
                 </Col>
                 <Col md={6} xl={8}>
                     <Card>
