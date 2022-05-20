@@ -1,6 +1,7 @@
 {
     "name": "react-datta-able-dashboard",
     "version": "0.0.2",
+    "homepage": "https://allovaro.github.io/big_book/",
     "private": true,
     "dependencies": {
         "@amcharts/amcharts3-react": "^3.1.0",
@@ -41,6 +42,8 @@
     },
     "scripts": {
         "start": "react-scripts start",
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d build",
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
@@ -61,5 +64,8 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
+    },
+    "devDependencies": {
+        "gh-pages": "^4.0.0"
     }
 }

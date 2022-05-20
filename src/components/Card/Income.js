@@ -6,7 +6,7 @@ import { API_SERVER } from '../../config/constant';
 const Income = () => {
     const account = useSelector((state) => state.account);
     const [income, setIncome] = useState({
-        cirill: 'loading', yuliya: 0, cashback: 0, another: 0
+        cirill: 0, yuliya: 0, cashback: 0, another: 0, total: 0,
     });
 
     useEffect(()=>{
@@ -16,10 +16,20 @@ const Income = () => {
                     "Authorization": `${account.token}`,
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ start: '01/01/2022', end: '03/01/2022' })
+                body: JSON.stringify({ start: '04/01/2022', end: '04/31/2022' })
             })
             .then(response => response.json())
-            .then(setIncome)
+            .then(response => {
+                const total = (response.cirill + response.yuliya +
+                    response.cashback + response.another) / 100;
+                setIncome({
+                    cirill: Math.round(response.cirill),
+                    yuliya: Math.round(response.yuliya),
+                    cashback: Math.round(response.cashback),
+                    another: Math.round(response.another),
+                    total});
+                console.log(`${Math.round(response.cirill / total)}%`);
+            })
             }, [account.token]);
 
     return (
@@ -38,8 +48,7 @@ const Income = () => {
                             <div
                                 className="progress-bar progress-c-theme"
                                 role="progressbar"
-                                style={{ width: '70%' }}
-                                aria-valuenow="70"
+                                style={{ width: `${Math.round(income.cirill / income.total)}%` }}
                                 aria-valuemin="0"
                                 aria-valuemax="100"
                             />
@@ -55,8 +64,7 @@ const Income = () => {
                             <div
                                 className="progress-bar progress-c-theme"
                                 role="progressbar"
-                                style={{ width: '35%' }}
-                                aria-valuenow="35"
+                                style={{ width: `${Math.round(income.yuliya / income.total)}%` }}
                                 aria-valuemin="0"
                                 aria-valuemax="100"
                             />
@@ -72,7 +80,7 @@ const Income = () => {
                             <div
                                 className="progress-bar progress-c-theme"
                                 role="progressbar"
-                                style={{ width: '25%' }}
+                                style={{ width: `${Math.round(income.cashback / income.total)}%` }}
                                 aria-valuenow="25"
                                 aria-valuemin="0"
                                 aria-valuemax="100"
@@ -89,7 +97,7 @@ const Income = () => {
                             <div
                                 className="progress-bar progress-c-theme"
                                 role="progressbar"
-                                style={{ width: '10%' }}
+                                style={{ width: `${Math.round(income.another / income.total)}%` }}
                                 aria-valuenow="10"
                                 aria-valuemin="0"
                                 aria-valuemax="100"

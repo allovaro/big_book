@@ -54,7 +54,7 @@ const routes = [
     },
     {
         exact: true,
-        path: '/auth/signup-2',
+        path: `/auth/signup-2`,
         component: lazy(() => import('./views/auth/signup/SignUp2'))
     },
     {
@@ -64,66 +64,66 @@ const routes = [
         routes: [
             {
                 exact: true,
-                path: '/app/dashboard/default',
+                path: `/app/dashboard/default`,
                 component: lazy(() => import('./views/dashboard/DashDefault'))
             },
 
             {
                 exact: true,
-                path: '/basic/button',
+                path: `/basic/button`,
                 component: lazy(() => import('./views/ui-elements/basic/BasicButton'))
             },
             {
                 exact: true,
-                path: '/basic/badges',
+                path: `/basic/badges`,
                 component: lazy(() => import('./views/ui-elements/basic/BasicBadges'))
             },
             {
                 exact: true,
-                path: '/basic/breadcrumb',
+                path: `/basic/breadcrumb`,
                 component: lazy(() => import('./views/ui-elements/basic/BasicBreadcrumb'))
             },
             {
                 exact: true,
-                path: '/basic/collapse',
+                path: `/basic/collapse`,
                 component: lazy(() => import('./views/ui-elements/basic/BasicCollapse'))
             },
             {
                 exact: true,
-                path: '/basic/tabs-pills',
+                path: `/basic/tabs-pills`,
                 component: lazy(() => import('./views/ui-elements/basic/BasicTabsPills'))
             },
             {
                 exact: true,
-                path: '/basic/typography',
+                path: `/basic/typography`,
                 component: lazy(() => import('./views/ui-elements/basic/BasicTypography'))
             },
 
             {
                 exact: true,
-                path: '/forms/form-basic',
+                path: `/forms/form-basic`,
                 component: lazy(() => import('./views/forms/FormsElements'))
             },
             {
                 exact: true,
-                path: '/tables/bootstrap',
+                path: `/tables/bootstrap`,
                 component: lazy(() => import('./views/tables/BootstrapTable'))
             },
 
             {
                 exact: true,
-                path: '/charts/nvd3',
+                path: `/charts/nvd3`,
                 component: lazy(() => import('./views/charts/nvd3-chart'))
             },
             {
                 exact: true,
-                path: '/maps/google-map',
+                path: `/maps/google-map`,
                 component: lazy(() => import('./views/maps/GoogleMaps'))
             },
 
             {
                 exact: true,
-                path: '/sample-page',
+                path: `/sample-page`,
                 component: lazy(() => import('./views/extra/SamplePage'))
             },
             {

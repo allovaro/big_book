@@ -11,6 +11,7 @@ import avatar3 from '../../../assets/images/user/avatar-3.jpg';
 
 import Income from '../../../components/Card/Income';
 import MonthPieStats from '../../charts/nvd3-chart/chart/MonthPieStats';
+import IncomeNew from '../../../components/Card/IncomeNew';
 
 const DashDefault = () => {
     return (
@@ -102,6 +103,9 @@ const DashDefault = () => {
                 </Col>
                 <Col xl={3}>
                     <Income />
+                </Col>
+                <Col xl={3}>
+                    <IncomeNew />
                 </Col>
                 <Col xl={3}>
                     <Card>
