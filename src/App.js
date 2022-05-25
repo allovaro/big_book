@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+// import { BrowserRouter as Router } from 'react-router-dom';
+import { HashRouter as Router } from 'react-router-dom';
 
 import routes, { renderRoutes } from './routes';
 import { BASENAME } from './config/constant';

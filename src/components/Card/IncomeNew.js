@@ -70,7 +70,6 @@ const IncomeNew = () => {
                             </div>
                         </Card.Body>
                     </Card>
-               
             );
 }
 

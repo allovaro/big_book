@@ -126,6 +126,28 @@ const routes = [
                 path: `/sample-page`,
                 component: lazy(() => import('./views/extra/SamplePage'))
             },
+
+            {
+                exact: true,
+                path: `/finance/overview`,
+                component: lazy(() => import('./views/finance/FinanceOverview'))
+            },
+            {
+                exact: true,
+                path: `/finance/budget`,
+                component: lazy(() => import('./views/finance/Budget'))
+            },
+
+            {
+                exact: true,
+                path: `/chronicles/health`,
+                component: lazy(() => import('./views/notes/HealthPage'))
+            },
+            {
+                exact: true,
+                path: `/chronicles/notes`,
+                component: lazy(() => import('./views/notes/NotesPage'))
+            },
             {
                 path: '*',
                 exact: true,

@@ -16,6 +16,50 @@ const menuItems = {
             ]
         },
         {
+            id: 'finance',
+            title: 'Finance',
+            type: 'group',
+            icon: 'icon-group',
+            children: [
+                {
+                    id: 'finance_overview',
+                    title: 'Overview',
+                    type: 'item',
+                    url: '/finance/overview',
+                    icon: 'feather icon-activity'
+                },
+                {
+                    id: 'budget',
+                    title: 'Budget',
+                    type: 'item',
+                    url: '/finance/budget',
+                    icon: 'feather icon-pie-chart'
+                }
+            ]
+        },
+        {
+            id: 'chronicles',
+            title: 'Chronicles',
+            type: 'group',
+            icon: 'icon-group',
+            children: [
+                {
+                    id: 'chr_overview',
+                    title: 'Health',
+                    type: 'item',
+                    url: '/chronicles/health',
+                    icon: 'feather icon-heart'
+                },
+                {
+                    id: 'notes',
+                    title: 'Notes',
+                    type: 'item',
+                    url: '/chronicles/notes',
+                    icon: 'feather icon-book'
+                }
+            ]
+        },
+        {
             id: 'ui-element',
             title: 'UI ELEMENT',
             type: 'group',
@@ -27,6 +71,12 @@ const menuItems = {
                     type: 'collapse',
                     icon: 'feather icon-box',
                     children: [
+                        {
+                            id: 'finance',
+                            title: 'Finance',
+                            type: 'item',
+                            url: '/basic/finance'
+                        },
                         {
                             id: 'button',
                             title: 'Button',
