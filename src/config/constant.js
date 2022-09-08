@@ -1,7 +1,8 @@
 export const BASENAME = 'big_book'; // don't add '/' at end off BASENAME
 export const BASE_URL = '/app/dashboard/default';
 export const BASE_TITLE = ' | Big Book ';
-export const API_SERVER = 'https://server.cirillsokolov.com:5123/api/';
+// export const API_SERVER = 'https://server.cirillsokolov.com:5123/api/';
+export const API_SERVER = 'http://localhost:5123/api/';
 
 export const CONFIG = {
     layout: 'vertical', // disable on free version

@@ -25,27 +25,14 @@ const AmChartStatistics6 = (props) => {
             ],
             graphs: [
                 {
-                    id: 'g1',
-                    valueAxis: 'v1',
-                    lineColor: ['#1de9b6', '#1dc4e9'],
-                    fillColors: ['#1de9b6', '#1dc4e9'],
-                    fillAlphas: 1,
-                    type: 'column',
-                    title: 'SALES',
-                    valueField: 'sales',
-                    columnWidth: 0.3,
-                    legendValueText: '$[[value]]M',
-                    balloonText: "[[title]]<br /><b style='font-size: 130%'>$[[value]]M</b>"
-                },
-                {
                     id: 'g2',
                     valueAxis: 'v1',
                     lineColor: ['#a389d4', '#899ed4'],
                     fillColors: ['#a389d4', '#899ed4'],
                     fillAlphas: 1,
                     type: 'column',
-                    title: 'VISITS ',
-                    valueField: 'visits',
+                    title: 'ПЛАН ',
+                    valueField: 'plan',
                     columnWidth: 0.3,
                     legendValueText: '$[[value]]M',
                     balloonText: "[[title]]<br /><b style='font-size: 130%'>$[[value]]M</b>"
@@ -57,8 +44,8 @@ const AmChartStatistics6 = (props) => {
                     fillColors: ['#04a9f5', '#049df5'],
                     fillAlphas: 1,
                     type: 'column',
-                    title: 'CLICKS',
-                    valueField: 'clicks',
+                    title: 'РЕАЛЬНОСТЬ',
+                    valueField: 'real',
                     columnWidth: 0.3,
                     legendValueText: '$[[value]]M',
                     balloonText: "[[title]]<br /><b style='font-size: 130%'>$[[value]]M</b>"
@@ -89,28 +76,24 @@ const AmChartStatistics6 = (props) => {
             },
             dataProvider: [
                 {
-                    Year: '2014',
-                    sales: 2,
-                    visits: 4,
-                    clicks: 3
+                    Year: 'Обязательные',
+                    plan: 4,
+                    real: 3
                 },
                 {
-                    Year: '2015',
-                    sales: 4,
-                    visits: 7,
-                    clicks: 5
+                    Year: 'Накопления',
+                    plan: 7,
+                    real: 5
                 },
                 {
-                    Year: '2016',
-                    sales: 2,
-                    visits: 3,
-                    clicks: 4
+                    Year: 'Переодические',
+                    plan: 3,
+                    real: 4
                 },
                 {
-                    Year: '2017',
-                    sales: 4.5,
-                    visits: 6,
-                    clicks: 4
+                    Year: 'Крупные',
+                    plan: 6,
+                    real: 4
                 }
             ]
         });

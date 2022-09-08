@@ -110,10 +110,10 @@ const DashDefault = () => {
                 <Col xl={3}>
                     <Card>
                         <Card.Header>
-                            <Card.Title as="h5">Баланс 50%30%20%</Card.Title>
+                            <Card.Title as="h5">Бюджет</Card.Title>
                         </Card.Header>
                         <Card.Body className="text-center">
-                            <MonthPieStats month={4}/>
+                            <MonthPieStats month={new Date().getMonth()}/>
                         </Card.Body>
                     </Card>
                 </Col>
