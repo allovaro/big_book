@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Row, Col, Card, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
@@ -13,7 +14,77 @@ import Income from '../../../components/Card/Income';
 import MonthPieStats from '../../charts/nvd3-chart/chart/MonthPieStats';
 import IncomeNew from '../../../components/Card/IncomeNew';
 
+import { API_SERVER } from '../../../config/constant'
+
+const monthesArr = ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
+    'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+
 const DashDefault = () => {
+    const account = useSelector((state) => state.account);
+    const [stats, setStats] = useState({
+        basic: {
+            budget: 0,
+            real: 0,
+        },
+        savings: {
+            budget: 0,
+            real: 0,
+        },
+        periodic: {
+            budget: 0,
+            real: 0,
+        },
+        big: {
+            budget: 0,
+            real: 0,
+        },
+        lifestyle: {
+            budget: 0,
+            real: 0,
+        }
+    });
+    
+    const month = new Date().getMonth();
+    useEffect(()=>{
+        fetch(`${API_SERVER}coinkeeper/expense/statistics`, {
+                method: "post",
+                headers: {
+                    "Authorization": `${account.token}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ })
+            })
+            .then(response => response.json())
+            .then(response => {
+                const base = response.base.years[response.base.years.length - 1].month[monthesArr[month]];
+                const lifestyle = response.lifestyle.years[response.lifestyle.years.length - 1].month[monthesArr[month]];
+                const periodic = response.periodic.years[response.periodic.years.length - 1].month[monthesArr[month]];
+                const big = response.big.years[response.big.years.length - 1].month[monthesArr[month]];
+                const savings = response.savings.years[response.savings.years.length - 1].month[monthesArr[month]];
+                setStats({
+                    basic: {
+                        budget: 75000,
+                        real: Math.round(base),
+                    },
+                    savings: {
+                        budget: 22505,
+                        real: Math.round(savings),
+                    },
+                    periodic: {
+                        budget: 17055,
+                        real: Math.round(periodic),
+                    },
+                    big: {
+                        budget: 36130,
+                        real: Math.round(big),
+                    },
+                    lifestyle: {
+                        budget: 14330,
+                        real: Math.round(lifestyle),
+                    }
+                })
+            })
+            }, [month, account.token]);
     return (
         <React.Fragment>
             <Row>
@@ -125,7 +196,7 @@ const DashDefault = () => {
                             <Card.Title as="h5">Statistics</Card.Title>
                         </Card.Header>
                         <Card.Body>
-                            <AmChartStatistics6 height="450px" />
+                            <AmChartStatistics6 height="450px" data={stats} />
                         </Card.Body>
                     </Card>
                 </Col>

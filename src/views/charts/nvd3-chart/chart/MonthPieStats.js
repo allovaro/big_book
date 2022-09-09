@@ -37,7 +37,7 @@ const PieBasicChart = (props) => {
                     { key: `Базовые`, y: Math.round(base), color: '#ff8a65' },
                     { key: `Развлечения`, y: Math.round(lifestyle), color: '#f4c22b' },
                     { key: `Переодические`, y: Math.round(periodic), color: '#04a9f5' },
-                    { key: `Крупные`, y: Math.round(periodic), color: '#0400f5' },
+                    { key: `Крупные`, y: Math.round(big), color: '#0400f5' },
                     { key: `Сбережения`, y: Math.round(savings), color: '#3ebfea' },
                 ])
             })

@@ -5,6 +5,7 @@ import 'amcharts3/amcharts/themes/light';
 import AmCharts from '@amcharts/amcharts3-react';
 
 const AmChartStatistics6 = (props) => {
+    const { basic, savings, periodic, big, lifestyle } = props.data;
     useEffect(() => {
         AmCharts.makeChart('bar-chart2', {
             type: 'serial',
@@ -19,7 +20,7 @@ const AmChartStatistics6 = (props) => {
                     lineAlpha: 0,
                     autoGridCount: false,
                     labelFunction: function (value) {
-                        return +Math.round(value) + '00';
+                        return +Math.round(value);
                     }
                 }
             ],
@@ -31,11 +32,11 @@ const AmChartStatistics6 = (props) => {
                     fillColors: ['#a389d4', '#899ed4'],
                     fillAlphas: 1,
                     type: 'column',
-                    title: 'ПЛАН ',
+                    title: 'Бюджет ',
                     valueField: 'plan',
                     columnWidth: 0.3,
-                    legendValueText: '$[[value]]M',
-                    balloonText: "[[title]]<br /><b style='font-size: 130%'>$[[value]]M</b>"
+                    legendValueText: '[[value]]Р',
+                    balloonText: "[[title]]<br /><b style='font-size: 130%'>[[value]]Р</b>"
                 },
                 {
                     id: 'g3',
@@ -47,8 +48,8 @@ const AmChartStatistics6 = (props) => {
                     title: 'РЕАЛЬНОСТЬ',
                     valueField: 'real',
                     columnWidth: 0.3,
-                    legendValueText: '$[[value]]M',
-                    balloonText: "[[title]]<br /><b style='font-size: 130%'>$[[value]]M</b>"
+                    legendValueText: '[[value]]Р',
+                    balloonText: "[[title]]<br /><b style='font-size: 130%'>[[value]]Р</b>"
                 }
             ],
             chartCursor: {
@@ -77,23 +78,28 @@ const AmChartStatistics6 = (props) => {
             dataProvider: [
                 {
                     Year: 'Обязательные',
-                    plan: 4,
-                    real: 3
+                    plan: basic.budget,
+                    real: basic.real
                 },
                 {
                     Year: 'Накопления',
-                    plan: 7,
-                    real: 5
+                    plan: savings.budget,
+                    real: savings.real
                 },
                 {
                     Year: 'Переодические',
-                    plan: 3,
-                    real: 4
+                    plan: periodic.budget,
+                    real: periodic.real
                 },
                 {
                     Year: 'Крупные',
-                    plan: 6,
-                    real: 4
+                    plan: big.budget,
+                    real: big.real
+                },
+                {
+                    Year: 'Развлечения',
+                    plan: lifestyle.budget,
+                    real: lifestyle.real
                 }
             ]
         });
