@@ -5,7 +5,7 @@ import 'amcharts3/amcharts/themes/light';
 import AmCharts from '@amcharts/amcharts3-react';
 
 const AmChartStatistics6 = (props) => {
-    const { basic, savings, periodic, big, lifestyle } = props.data;
+    const { budget, data } = props;
     useEffect(() => {
         AmCharts.makeChart('bar-chart2', {
             type: 'serial',
@@ -78,28 +78,28 @@ const AmChartStatistics6 = (props) => {
             dataProvider: [
                 {
                     Year: 'Обязательные',
-                    plan: basic.budget,
-                    real: basic.real
+                    plan: budget.basic,
+                    real: data.basic
                 },
                 {
                     Year: 'Накопления',
-                    plan: savings.budget,
-                    real: savings.real
+                    plan: budget.savings,
+                    real: data.savings
                 },
                 {
                     Year: 'Переодические',
-                    plan: periodic.budget,
-                    real: periodic.real
+                    plan: budget.periodic,
+                    real: data.periodic
                 },
                 {
                     Year: 'Крупные',
-                    plan: big.budget,
-                    real: big.real
+                    plan: budget.big,
+                    real: data.big
                 },
                 {
                     Year: 'Развлечения',
-                    plan: lifestyle.budget,
-                    real: lifestyle.real
+                    plan: budget.lifestyle,
+                    real: data.lifestyle
                 }
             ]
         });

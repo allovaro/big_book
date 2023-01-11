@@ -21,30 +21,23 @@ const monthesArr = ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
 
 const DashDefault = () => {
     const account = useSelector((state) => state.account);
+    const [budget, setBudget] = useState({
+        basic: 0,
+        savings: 0,
+        periodic: 0,
+        big: 0,
+        lifestyle: 0,
+    });
     const [stats, setStats] = useState({
-        basic: {
-            budget: 0,
-            real: 0,
-        },
-        savings: {
-            budget: 0,
-            real: 0,
-        },
-        periodic: {
-            budget: 0,
-            real: 0,
-        },
-        big: {
-            budget: 0,
-            real: 0,
-        },
-        lifestyle: {
-            budget: 0,
-            real: 0,
-        }
+        basic: 0,
+        savings: 0,
+        periodic: 0,
+        big: 0,
+        lifestyle: 0,
     });
     
     const month = new Date().getMonth();
+    const year = new Date().getFullYear();
     useEffect(()=>{
         fetch(`${API_SERVER}coinkeeper/expense/statistics`, {
                 method: "post",
@@ -62,29 +55,33 @@ const DashDefault = () => {
                 const big = response.big.years[response.big.years.length - 1].month[monthesArr[month]];
                 const savings = response.savings.years[response.savings.years.length - 1].month[monthesArr[month]];
                 setStats({
-                    basic: {
-                        budget: 75000,
-                        real: Math.round(base),
-                    },
-                    savings: {
-                        budget: 22505,
-                        real: Math.round(savings),
-                    },
-                    periodic: {
-                        budget: 17055,
-                        real: Math.round(periodic),
-                    },
-                    big: {
-                        budget: 36130,
-                        real: Math.round(big),
-                    },
-                    lifestyle: {
-                        budget: 14330,
-                        real: Math.round(lifestyle),
-                    }
+                    basic: Math.round(base),
+                    savings: Math.round(savings),
+                    periodic: Math.round(periodic),
+                    big: Math.round(big),
+                    lifestyle: Math.round(lifestyle),
                 })
+            });
+        fetch(`${API_SERVER}coinkeeper/settings/get_budget`, {
+                method: "post",
+                headers: {
+                    "Authorization": `${account.token}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ period: `${month + 1}/${year}` })
             })
-            }, [month, account.token]);
+            .then(response => response.json())
+            .then(response => {
+                const { basic, savings, periodic, big, lifestyle } = response;
+                setBudget({
+                    basic,
+                    savings,
+                    periodic,
+                    big,
+                    lifestyle,
+                })
+            });
+            }, [month, year, account.token]);
     return (
         <React.Fragment>
             <Row>
@@ -196,7 +193,7 @@ const DashDefault = () => {
                             <Card.Title as="h5">Statistics</Card.Title>
                         </Card.Header>
                         <Card.Body>
-                            <AmChartStatistics6 height="450px" data={stats} />
+                            <AmChartStatistics6 height="450px" budget={budget} data={stats} />
                         </Card.Body>
                     </Card>
                 </Col>
