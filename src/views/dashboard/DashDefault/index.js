@@ -10,10 +10,6 @@ import avatar1 from '../../../assets/images/user/avatar-1.jpg';
 import avatar2 from '../../../assets/images/user/avatar-2.jpg';
 import avatar3 from '../../../assets/images/user/avatar-3.jpg';
 
-import Income from '../../../components/Card/Income';
-import MonthPieStats from '../../charts/nvd3-chart/chart/MonthPieStats';
-import IncomeNew from '../../../components/Card/IncomeNew';
-
 import { API_SERVER } from '../../../config/constant'
 
 const monthesArr = ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
@@ -166,22 +162,6 @@ const DashDefault = () => {
                                     aria-valuemax="100"
                                 />
                             </div>
-                        </Card.Body>
-                    </Card>
-                </Col>
-                <Col xl={3}>
-                    <Income />
-                </Col>
-                <Col xl={3}>
-                    <IncomeNew />
-                </Col>
-                <Col xl={3}>
-                    <Card>
-                        <Card.Header>
-                            <Card.Title as="h5">Бюджет</Card.Title>
-                        </Card.Header>
-                        <Card.Body className="text-center">
-                            <MonthPieStats month={new Date().getMonth()}/>
                         </Card.Body>
                     </Card>
                 </Col>

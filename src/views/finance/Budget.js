@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Row, Col, Card } from 'react-bootstrap';
+import { Row, Col, Card, Form, Button } from 'react-bootstrap';
 import { API_SERVER } from '../../config/constant';
+
+import MonthPieStats from '../charts/nvd3-chart/chart/MonthPieStats';
 
 const Budget = () => {
     const account = useSelector((state) => state.account);
@@ -46,16 +48,19 @@ const Budget = () => {
         });
     }, [month, year, account.token]);
 
-    const budgetInput = (e) => {
-        const [ id ] = e.target.id.split('_');
+    const setBudget = (category, value) => {
         fetch(`${API_SERVER}coinkeeper/settings/set_budget`, {
             method: "post",
             headers: {
                 "Authorization": `${account.token}`,
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ period: `${month + 1}/${year}`, category: id, value: e.target.value })
+            body: JSON.stringify({ period: `${month + 1}/${year}`, category, value: value })
         });
+    }
+
+    const budgetInput = (e) => {
+        const [ id ] = e.target.id.split('_');
         if (id === 'basic') setBasicBudget(e.target.value);
         else if (id === 'big') setBigBudget(e.target.value);
         else if (id === 'lifestyle') setLifestyleBudget(e.target.value);
@@ -66,96 +71,107 @@ const Budget = () => {
     return (
         <React.Fragment>
             <Row>
-                <Col md={6} xl={4}>
+            <Col sm={12}>
                     <Card>
+                        <Card.Header>
+                            <Card.Title as="h5">{months[new Date().getMonth()]} budget</Card.Title>
+                        </Card.Header>
                         <Card.Body>
-                            <h6 className="mb-4">{months[new Date().getMonth()]} budget</h6>
-                            <div className="input-group input-group-sm mb-3">
-                                <div className="input-group-prepend">
-                                    <span className="input-group-text" >Basic</span>
-                                </div>
-                                <input type="text" id="basic_input" className="form-control" value={basicBudget} onChange={budgetInput} aria-label="Small" aria-describedby="inputGroup-sizing-sm" />
-                            </div>
-                            <div className="input-group input-group-sm mb-3">
-                                <div className="input-group-prepend">
-                                    <span className="input-group-text" >Lifestyle</span>
-                                </div>
-                                <input type="text" id="lifestyle_input" className="form-control" value={lifestyleBudget} onChange={budgetInput} aria-label="Small" aria-describedby="inputGroup-sizing-sm" />
-                            </div>
-                            <div className="input-group input-group-sm mb-3">
-                                <div className="input-group-prepend">
-                                    <span className="input-group-text" >Periodic</span>
-                                </div>
-                                <input type="text" id="periodic_input"className="form-control" value={periodicBudget} onChange={budgetInput} aria-label="Small" aria-describedby="inputGroup-sizing-sm" />
-                            </div>
-                            <div className="input-group input-group-sm mb-3">
-                                <div className="input-group-prepend">
-                                    <span className="input-group-text" >Big</span>
-                                </div>
-                                <input type="text" id="big_input" className="form-control" value={bigBudget} onChange={budgetInput} aria-label="Small" aria-describedby="inputGroup-sizing-sm" />
-                            </div>
-                            <div className="input-group input-group-sm mb-3">
-                                <div className="input-group-prepend">
-                                    <span className="input-group-text" >Savings</span>
-                                </div>
-                                <input type="text" id="savings_input" className="form-control" value={savingsBudget} onChange={budgetInput} aria-label="Small" aria-describedby="inputGroup-sizing-sm" />
-                            </div>
-                        </Card.Body>
-                    </Card>
-                </Col>
-                <Col md={6} xl={4}>
-                    <Card>
-                        <Card.Body>
-                            <h6 className="mb-4">Monthly Sales</h6>
-                            <div className="row d-flex align-items-center">
-                                <div className="col-9">
-                                    <h3 className="f-w-300 d-flex align-items-center m-b-0">
-                                        <i className="feather icon-arrow-down text-c-red f-30 m-r-5" /> $2.942.32
-                                    </h3>
-                                </div>
-
-                                <div className="col-3 text-right">
-                                    <p className="m-b-0">36%</p>
-                                </div>
-                            </div>
-                            <div className="progress m-t-30" style={{ height: '7px' }}>
-                                <div
-                                    className="progress-bar progress-c-theme2"
-                                    role="progressbar"
-                                    style={{ width: '35%' }}
-                                    aria-valuenow="35"
-                                    aria-valuemin="0"
-                                    aria-valuemax="100"
-                                />
-                            </div>
+                            <Row>
+                                <Col>
+                                    <Form inline >
+                                        <Form.Group className="mb-2">
+                                            <Form.Label srOnly>Basic</Form.Label>
+                                            <Form.Control plaintext readOnly defaultValue="Basic" />
+                                        </Form.Group>
+                                        <Form.Group className="mb-2 mr-3">
+                                            <Form.Label srOnly>Value</Form.Label>
+                                            <Form.Control id="basic_input" value={basicBudget} onChange={budgetInput} placeholder="Value" />
+                                        </Form.Group>
+                                        <Form.Group>
+                                            <Button className="mb-0" onClick={() => { setBudget('basic', basicBudget) }}>Set</Button>
+                                        </Form.Group>
+                                    </Form>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <Form inline >
+                                        <Form.Group className="mb-2">
+                                            <Form.Label srOnly>Lifestyle</Form.Label>
+                                            <Form.Control plaintext readOnly defaultValue="Lifestyle" />
+                                        </Form.Group>
+                                        <Form.Group className="mb-2 mr-3">
+                                            <Form.Label srOnly>Value</Form.Label>
+                                            <Form.Control id="lifestyle_input" value={lifestyleBudget} onChange={budgetInput} placeholder="Value" />
+                                        </Form.Group>
+                                        <Form.Group>
+                                            <Button className="mb-0" onClick={() => { setBudget('lifestyle', lifestyleBudget) }}>Set</Button>
+                                        </Form.Group>
+                                    </Form>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <Form inline >
+                                        <Form.Group className="mb-2">
+                                            <Form.Label srOnly>Periodic</Form.Label>
+                                            <Form.Control plaintext readOnly defaultValue="Periodic" />
+                                        </Form.Group>
+                                        <Form.Group className="mb-2 mr-3">
+                                            <Form.Label srOnly>Value</Form.Label>
+                                            <Form.Control id="periodic_input" value={periodicBudget} onChange={budgetInput} placeholder="Value" />
+                                        </Form.Group>
+                                        <Form.Group>
+                                            <Button className="mb-0" onClick={() => { setBudget('periodic', periodicBudget) }}>Set</Button>
+                                        </Form.Group>
+                                    </Form>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <Form inline >
+                                        <Form.Group className="mb-2">
+                                            <Form.Label srOnly>Big</Form.Label>
+                                            <Form.Control plaintext readOnly defaultValue="Big" />
+                                        </Form.Group>
+                                        <Form.Group className="mb-2 mr-3">
+                                            <Form.Label srOnly>Value</Form.Label>
+                                            <Form.Control id="big_input" value={bigBudget} onChange={budgetInput} placeholder="Value" />
+                                        </Form.Group>
+                                        <Form.Group>
+                                            <Button className="mb-0" onClick={() => { setBudget('big', bigBudget) }}>Set</Button>
+                                        </Form.Group>
+                                    </Form>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <Form inline >
+                                        <Form.Group className="mb-2">
+                                            <Form.Label srOnly>Savings</Form.Label>
+                                            <Form.Control plaintext readOnly defaultValue="Savings" />
+                                        </Form.Group>
+                                        <Form.Group className="mb-2 mr-3">
+                                            <Form.Label srOnly>Value</Form.Label>
+                                            <Form.Control id="savings_input" value={savingsBudget} onChange={budgetInput} placeholder="Value" />
+                                        </Form.Group>
+                                        <Form.Group>
+                                            <Button className="mb-0" onClick={() => { setBudget('savings', savingsBudget) }}>Set</Button>
+                                        </Form.Group>
+                                    </Form>
+                                </Col>
+                            </Row>
                         </Card.Body>
                     </Card>
                 </Col>
                 <Col xl={3}>
                     <Card>
-                        <Card.Body>
-                            <h6 className="mb-4">Monthly Sales</h6>
-                            <div className="row d-flex align-items-center">
-                                <div className="col-9">
-                                    <h3 className="f-w-300 d-flex align-items-center m-b-0">
-                                        <i className="feather icon-arrow-down text-c-red f-30 m-r-5" /> $2.942.32
-                                    </h3>
-                                </div>
-
-                                <div className="col-3 text-right">
-                                    <p className="m-b-0">36%</p>
-                                </div>
-                            </div>
-                            <div className="progress m-t-30" style={{ height: '7px' }}>
-                                <div
-                                    className="progress-bar progress-c-theme2"
-                                    role="progressbar"
-                                    style={{ width: '35%' }}
-                                    aria-valuenow="35"
-                                    aria-valuemin="0"
-                                    aria-valuemax="100"
-                                />
-                            </div>
+                        <Card.Header>
+                            <Card.Title as="h5">Бюджет соотношение</Card.Title>
+                        </Card.Header>
+                        <Card.Body className="text-center">
+                            <MonthPieStats month={new Date().getMonth()}/>
                         </Card.Body>
                     </Card>
                 </Col>
