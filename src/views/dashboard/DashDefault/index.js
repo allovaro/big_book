@@ -6,14 +6,11 @@ import { Link } from 'react-router-dom';
 import AmChartEarnings from './chart/AmChartEarnings';
 import AmChartStatistics6 from './chart/AmChartStatistics6';
 
+import { getStatistics, getBudget } from '../../../utils/fetchCoinkeeper';
+
 import avatar1 from '../../../assets/images/user/avatar-1.jpg';
 import avatar2 from '../../../assets/images/user/avatar-2.jpg';
 import avatar3 from '../../../assets/images/user/avatar-3.jpg';
-
-import { API_SERVER } from '../../../config/constant'
-
-const monthesArr = ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
-    'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
 
 const DashDefault = () => {
     const account = useSelector((state) => state.account);
@@ -35,49 +32,29 @@ const DashDefault = () => {
     const month = new Date().getMonth();
     const year = new Date().getFullYear();
     useEffect(()=>{
-        fetch(`${API_SERVER}coinkeeper/expense/statistics`, {
-                method: "post",
-                headers: {
-                    "Authorization": `${account.token}`,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ })
-            })
-            .then(response => response.json())
-            .then(response => {
-                const base = response.base.years[response.base.years.length - 1].month[monthesArr[month]];
-                const lifestyle = response.lifestyle.years[response.lifestyle.years.length - 1].month[monthesArr[month]];
-                const periodic = response.periodic.years[response.periodic.years.length - 1].month[monthesArr[month]];
-                const big = response.big.years[response.big.years.length - 1].month[monthesArr[month]];
-                const savings = response.savings.years[response.savings.years.length - 1].month[monthesArr[month]];
-                setStats({
-                    basic: Math.round(base),
-                    savings: Math.round(savings),
-                    periodic: Math.round(periodic),
-                    big: Math.round(big),
-                    lifestyle: Math.round(lifestyle),
-                })
+        const fetch = async () => {
+            const [ statistics, budget ] = await Promise.all([
+                getStatistics(account.token),
+                getBudget(account.token),
+            ]);
+            setStats({
+                basic: Math.round(statistics.base),
+                savings: Math.round(statistics.savings),
+                periodic: Math.round(statistics.periodic),
+                big: Math.round(statistics.big),
+                lifestyle: Math.round(statistics.lifestyle),
             });
-        fetch(`${API_SERVER}coinkeeper/settings/get_budget`, {
-                method: "post",
-                headers: {
-                    "Authorization": `${account.token}`,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ period: `${month + 1}/${year}` })
-            })
-            .then(response => response.json())
-            .then(response => {
-                const { basic, savings, periodic, big, lifestyle } = response;
-                setBudget({
-                    basic,
-                    savings,
-                    periodic,
-                    big,
-                    lifestyle,
-                })
+            setBudget({
+                basic: budget.basic,
+                savings: budget.savings,
+                periodic: budget.periodic,
+                big: budget.big,
+                lifestyle: budget.lifestyle,
             });
-            }, [month, year, account.token]);
+        };
+        fetch();
+        }, [month, year, account.token]
+    );
     return (
         <React.Fragment>
             <Row>

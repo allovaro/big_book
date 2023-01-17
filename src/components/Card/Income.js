@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 
 const monthLabes = ['Январе', 'Феврале', 'Марте',
@@ -8,15 +8,14 @@ const monthLabes = ['Январе', 'Феврале', 'Марте',
 
 const Income = (props) => {
     const { cirill, yuliya, cashback, another, total } = props.data;
-    const [ month, setMonth ] = useState(new Date().getMonth());
 
     return (
         <Card>
             <Card.Header>
                 <Card.Title as="h5" className="col-xl-12 mx-auto">
-                    <Button size="sm" variant="outline-secondary">prev</Button>
-                    Доходы в {monthLabes[new Date().getMonth()]}
-                    <Button size="sm" variant="outline-secondary">next</Button>
+                    <Button id="prev_button" size="sm" variant="outline-secondary" onClick={props.onChangeMonth}>prev</Button>
+                    Доходы в {monthLabes[props.month - 1]}
+                    <Button id="next_button" size="sm" variant="outline-secondary" onClick={props.onChangeMonth}>next</Button>
                 </Card.Title>
             </Card.Header>
             <Card.Body>

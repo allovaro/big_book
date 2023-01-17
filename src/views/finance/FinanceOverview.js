@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Row, Col, Card, Form, Button } from 'react-bootstrap';
-import { API_SERVER } from '../../config/constant';
+import { Row, Col, Card } from 'react-bootstrap';
+import { getTransactionsCount, getIncome } from '../../utils/fetchCoinkeeper';
 
 import Income from '../../components/Card/Income';
 
 const FinanceOverview = () => {
-    const month = new Date().getMonth();
+    const month = new Date().getMonth() + 1;
     const year = new Date().getFullYear();
     const account = useSelector((state) => state.account);
     const [ trCounts, setTrCounts ] = useState(0);
@@ -17,48 +17,70 @@ const FinanceOverview = () => {
         another: 0,
         total: 0,
     });
+    const [ incomeMonth, setIncomeMonth ] = useState(month);
+    const [ incomeYear, setIncomeYear ] = useState(year);
+
+    const updateEarnings = async (month, year) => {
+        const start = `${month}/1/${year}`;
+        const end = month === 12 ? `1/1/${year + 1}` : `${month + 1}/1/${year}`;
+        const earnings = await getIncome(account.token, start, end);
+        setEarnings({
+            cirill: Math.round(earnings.cirill),
+            yuliya: Math.round(earnings.yuliya),
+            cashback: Math.round(earnings.cashback),
+            another: Math.round(earnings.another),
+            total,
+        });
+    };
+
     useEffect(() => {
-        const start = `${month + 1}/1/${year}`;
-        const end = month === 12 ? `1/1/${year + 1}` : `${month + 2}/1/${year}`;
+        const start = `${month}/1/${year}`;
+        const end = month === 12 ? `1/1/${year + 1}` : `${month + 1}/1/${year}`;
         const fetchData = async () => {
-            const [ counts, earnings ] = await Promise.all([
-                fetch(`${API_SERVER}coinkeeper/expense/count`, {
-                    method: "post",
-                    headers: {
-                        "Authorization": `${account.token}`,
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ start, end })
-                }),
-                fetch(`${API_SERVER}coinkeeper/income`, {
-                    method: "post",
-                    headers: {
-                        "Authorization": `${account.token}`,
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ start, end })
-                })
+            const [ count, earnings ] = await Promise.all([
+                getTransactionsCount(account.token, start, end),
+                getIncome(account.token, start, end),
             ]);
-            const { count } = await counts.json();
-            // const { cirill, yuliya, cashback, another } = await earnings.json();
             setTrCounts(count);
-            const earningsRes = await earnings.json();
-            const total = (earningsRes.cirill + earningsRes.yuliya +
-                earningsRes.cashback + earningsRes.another) / 100;
+            const total = (earnings.cirill + earnings.yuliya +
+                earnings.cashback + earnings.another) / 100;
             setEarnings({
-                cirill: Math.round(earningsRes.cirill),
-                yuliya: Math.round(earningsRes.yuliya),
-                cashback: Math.round(earningsRes.cashback),
-                another: Math.round(earningsRes.another),
-                total
+                cirill: Math.round(earnings.cirill),
+                yuliya: Math.round(earnings.yuliya),
+                cashback: Math.round(earnings.cashback),
+                another: Math.round(earnings.another),
+                total,
             });
-            // setEarnings(earningsRes);
         }
         fetchData();
     }, [month, year, account.token]);
 
+    const onIncomeClick = async (e) => {
+        if (e.target.id === 'prev_button') {
+            if (incomeMonth === 1) {
+                setIncomeMonth(12);
+                setIncomeYear(incomeYear - 1);
+                updateEarnings(12, incomeYear - 1);
+                return;
+            }
+            setIncomeMonth(prevState => (prevState - 1));
+            updateEarnings(incomeMonth - 1, incomeYear);
+        }
+        if (e.target.id === 'next_button') {
+            if (incomeMonth === 12) {
+                setIncomeMonth(1);
+                setIncomeYear(incomeYear + 1);
+                updateEarnings(1, incomeYear + 1);
+                return;
+            }
+            setIncomeMonth((prevState) => (prevState + 1));
+            updateEarnings(incomeMonth + 1, incomeYear);
+        }
+    }
+
     const { cirill, yuliya, cashback, another } = earnings;
     const total = Math.round((cirill + yuliya + cashback + another) / 1000);
+
     return (
         <React.Fragment>
             <Row>
@@ -89,10 +111,13 @@ const FinanceOverview = () => {
                     </Card>
                 </Col>
                 <Col md={6} xl={3} >
-                    <Income data={earnings} />
+                    <Income
+                        data={earnings}
+                        onChangeMonth={onIncomeClick}
+                        month={incomeMonth}
+                        year={incomeYear} />
                 </Col>
             </Row>
-
         </React.Fragment>
     )
 }
