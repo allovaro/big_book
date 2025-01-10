@@ -1,2 +1,0 @@
-(this["webpackJsonpreact-datta-able-dashboard"]=this["webpackJsonpreact-datta-able-dashboard"]||[]).push([[30],{930:function(a,t,e){"use strict";e.r(t);var r=e(0),s=e.n(r),c=e(1);t.default=function(){return Object(c.jsx)(s.a.Fragment,{children:Object(c.jsx)("h1",{children:"Hello Notes"})})}}}]);
-//# sourceMappingURL=30.0a9fe53e.chunk.js.map
